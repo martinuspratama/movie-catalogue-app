@@ -7,19 +7,16 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.rmalan.app.moviecataloguealpha.model.MovieItems;
+import com.rmalan.app.moviecataloguealpha.model.TvShowItems;
 
-public class DetailActivity extends AppCompatActivity {
+public class TvShowDetailActivity extends AppCompatActivity {
 
-    public static final String EXTRA_MOVIE = "extra_movie";
-    public static final String EXTRA_DETAIL_MOVIE = "extra_detail_movie";
+    public static final String EXTRA_TV_SHOW = "extra_tv_show";
 
     TextView tvTitle, tvRelease, tvOverview;
     ImageView imgPoster;
 
-    private MovieItems movieItems;
-
-    private String actionBarTitle;
+    private TvShowItems tvShowItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,17 +28,15 @@ public class DetailActivity extends AppCompatActivity {
         tvRelease = findViewById(R.id.txt_release);
         tvOverview = findViewById(R.id.txt_overview);
 
-        movieItems = getIntent().getParcelableExtra(EXTRA_MOVIE);
+        tvShowItems = getIntent().getParcelableExtra(EXTRA_TV_SHOW);
 
-        Glide.with(this).load("https://image.tmdb.org/t/p/w500/" + movieItems.getPoster()).into(imgPoster);
-        tvTitle.setText(movieItems.getTitle());
-        tvRelease.setText(movieItems.getReleaseDate());
-        tvOverview.setText(movieItems.getOverview());
-
-        actionBarTitle = getIntent().getStringExtra(EXTRA_DETAIL_MOVIE);
+        Glide.with(this).load("https://image.tmdb.org/t/p/w500/" + tvShowItems.getPoster()).into(imgPoster);
+        tvTitle.setText(tvShowItems.getTitle());
+        tvRelease.setText(tvShowItems.getReleaseDate());
+        tvOverview.setText(tvShowItems.getOverview());
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(actionBarTitle);
+            getSupportActionBar().setTitle(getResources().getString(R.string.detail_tv_show));
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

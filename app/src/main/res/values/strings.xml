@@ -8,4 +8,6 @@
     <string name="title">Title</string>
     <string name="release_date">Release Date</string>
     <string name="overview">Overview</string>
+    <string name="detail_movie">Detail Movie</string>
+    <string name="detail_tv_show">Detail TV Show</string>
 </resources>

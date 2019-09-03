@@ -10,20 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.rmalan.app.moviecataloguealpha.R;
-import com.rmalan.app.moviecataloguealpha.model.MovieItems;
+import com.rmalan.app.moviecataloguealpha.model.TvShowItems;
 
 import java.util.ArrayList;
 
-public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder> {
+public class TvShowsAdapter extends RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder> {
 
     private OnItemClickCallback onItemClickCallback;
-    private ArrayList<MovieItems> mData = new ArrayList<>();
+    private ArrayList<TvShowItems> mData = new ArrayList<>();
 
     public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback;
     }
 
-    public void setData(ArrayList<MovieItems> items) {
+    public void setData(ArrayList<TvShowItems> items) {
         mData.clear();
         mData.addAll(items);
         notifyDataSetChanged();
@@ -31,13 +31,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
 
     @NonNull
     @Override
-    public MoviesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TvShowsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_items, parent, false);
-        return new MoviesViewHolder(view);
+        return new TvShowsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MoviesViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final TvShowsViewHolder holder, int position) {
         holder.bind(mData.get(position));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -54,21 +54,21 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
     }
 
     public interface OnItemClickCallback {
-        void onItemClicked(MovieItems movieItems);
+        void onItemClicked(TvShowItems tvShowItems);
     }
 
-    public class MoviesViewHolder extends RecyclerView.ViewHolder {
+    public class TvShowsViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imgPoster;
 
-        public MoviesViewHolder(@NonNull View itemView) {
+        public TvShowsViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imgPoster = itemView.findViewById(R.id.img_poster);
         }
 
-        void bind(MovieItems movieItems) {
-            Glide.with(itemView.getContext()).load("https://image.tmdb.org/t/p/w500/" + movieItems.getPoster()).into(imgPoster);
+        void bind(TvShowItems tvShowItems) {
+            Glide.with(itemView.getContext()).load("https://image.tmdb.org/t/p/w500/" + tvShowItems.getPoster()).into(imgPoster);
         }
     }
 }

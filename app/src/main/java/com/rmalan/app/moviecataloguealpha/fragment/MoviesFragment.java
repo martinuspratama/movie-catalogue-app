@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.rmalan.app.moviecataloguealpha.DetailActivity;
+import com.rmalan.app.moviecataloguealpha.MovieDetailActivity;
 import com.rmalan.app.moviecataloguealpha.R;
 import com.rmalan.app.moviecataloguealpha.adapter.MoviesAdapter;
 import com.rmalan.app.moviecataloguealpha.model.MovieItems;
@@ -65,9 +65,8 @@ public class MoviesFragment extends Fragment {
             public void onItemClicked(MovieItems movieItems) {
                 // Toast.makeText(getActivity(), "Id: " +movieItems.getId(), Toast.LENGTH_SHORT).show();
 
-                Intent movieDetailIntent = new Intent(getActivity(), DetailActivity.class);
-                movieDetailIntent.putExtra(DetailActivity.EXTRA_MOVIE, movieItems);
-                movieDetailIntent.putExtra(DetailActivity.EXTRA_DETAIL_MOVIE, "Detail Movie");
+                Intent movieDetailIntent = new Intent(getActivity(), MovieDetailActivity.class);
+                movieDetailIntent.putExtra(MovieDetailActivity.EXTRA_MOVIE, movieItems);
                 startActivity(movieDetailIntent);
             }
         });
