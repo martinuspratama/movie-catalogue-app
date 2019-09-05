@@ -8,6 +8,14 @@
     <string name="title">Title</string>
     <string name="release_date">Release Date</string>
     <string name="overview">Overview</string>
-    <string name="detail_movie">Detail Movie</string>
-    <string name="detail_tv_show">Detail TV Show</string>
+    <string name="detail_movie">Movie Detail</string>
+    <string name="detail_tv_show">TV Show Detail</string>
+    <string name="add_favorite">Added to favorites</string>
+    <string name="already_favorite">Already saved in favorites</string>
+    <string name="title_delete">Delete</string>
+    <string name="delete">Remove from favorites?</string>
+    <string name="delete_item">Removed from favorites</string>
+    <string name="delete_failed">No Data</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

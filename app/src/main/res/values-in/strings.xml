@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Movie Catalogue</string>
+    <string name="title_movies">Film Bioskop</string>
+    <string name="title_tv_shows">Acara TV</string>
+    <string name="title_favorites">Favorit</string>
+    <string name="img_poster">Poster</string>
+    <string name="language">id-ID</string>
+    <string name="title">Judul</string>
+    <string name="release_date">Tanggal Rilis</string>
+    <string name="overview">Ikhtisar</string>
+    <string name="detail_movie">Detail Film Bioskop</string>
+    <string name="detail_tv_show">Detail Acara TV</string>
+    <string name="add_favorite">Ditambahkan ke favorit</string>
+    <string name="already_favorite">Sudah tersimpan di favorit</string>
+    <string name="title_delete">Hapus</string>
+    <string name="delete">Hapus dari favorit?</string>
+    <string name="delete_item">Dihapus dari favorit</string>
+    <string name="delete_failed">Tidak ada data</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+</resources>

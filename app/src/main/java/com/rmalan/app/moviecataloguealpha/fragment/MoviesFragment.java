@@ -15,9 +15,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.rmalan.app.moviecataloguealpha.MovieDetailActivity;
 import com.rmalan.app.moviecataloguealpha.R;
 import com.rmalan.app.moviecataloguealpha.adapter.MoviesAdapter;
+import com.rmalan.app.moviecataloguealpha.detail.MovieDetailActivity;
 import com.rmalan.app.moviecataloguealpha.model.MovieItems;
 import com.rmalan.app.moviecataloguealpha.viewmodel.MovieViewModel;
 

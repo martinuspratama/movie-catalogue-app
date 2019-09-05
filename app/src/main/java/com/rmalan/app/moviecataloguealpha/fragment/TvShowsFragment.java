@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmalan.app.moviecataloguealpha.R;
-import com.rmalan.app.moviecataloguealpha.TvShowDetailActivity;
 import com.rmalan.app.moviecataloguealpha.adapter.TvShowsAdapter;
+import com.rmalan.app.moviecataloguealpha.detail.TvShowDetailActivity;
 import com.rmalan.app.moviecataloguealpha.model.TvShowItems;
 import com.rmalan.app.moviecataloguealpha.viewmodel.TvShowViewModel;
 

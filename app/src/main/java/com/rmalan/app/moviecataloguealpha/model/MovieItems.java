@@ -70,10 +70,6 @@ public class MovieItems implements Parcelable {
         return poster;
     }
 
-    public void setPoster(String poster) {
-        this.poster = poster;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -86,16 +82,8 @@ public class MovieItems implements Parcelable {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
     public String getOverview() {
         return overview;
-    }
-
-    public void setOverview(String overview) {
-        this.overview = overview;
     }
 
     @Override
