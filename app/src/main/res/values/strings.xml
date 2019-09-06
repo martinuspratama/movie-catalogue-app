@@ -18,4 +18,6 @@
     <string name="delete_failed">No Data</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="appwidget_text">Favorites Widget</string>
+    <string name="empty_text">No data</string>
 </resources>

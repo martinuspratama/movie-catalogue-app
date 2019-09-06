@@ -19,4 +19,6 @@
     <string name="delete_failed">Tidak ada data</string>
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
+    <string name="appwidget_text">Widget Favorit</string>
+    <string name="empty_text">Tidak ada data</string>
 </resources>
