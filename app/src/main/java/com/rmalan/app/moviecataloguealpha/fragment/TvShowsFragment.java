@@ -1,14 +1,20 @@
 package com.rmalan.app.moviecataloguealpha.fragment;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -22,6 +28,7 @@ import com.rmalan.app.moviecataloguealpha.model.TvShowItems;
 import com.rmalan.app.moviecataloguealpha.viewmodel.TvShowViewModel;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class TvShowsFragment extends Fragment {
 
@@ -30,6 +37,15 @@ public class TvShowsFragment extends Fragment {
 
     private TvShowViewModel tvShowViewModel;
     private Observer<ArrayList<TvShowItems>> getTvShow = new Observer<ArrayList<TvShowItems>>() {
+        @Override
+        public void onChanged(ArrayList<TvShowItems> tvShowItems) {
+            if (tvShowItems != null) {
+                tvShowsAdapter.setData(tvShowItems);
+                showLoading(false);
+            }
+        }
+    };
+    private Observer<ArrayList<TvShowItems>> getSeachTvShow = new Observer<ArrayList<TvShowItems>>() {
         @Override
         public void onChanged(ArrayList<TvShowItems> tvShowItems) {
             if (tvShowItems != null) {
@@ -78,6 +94,55 @@ public class TvShowsFragment extends Fragment {
         } else {
             progressBar.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.options_menu, menu);
+
+        SearchManager searchManager = (SearchManager) Objects.requireNonNull(getActivity()).getSystemService(Context.SEARCH_SERVICE);
+
+        if (searchManager != null) {
+            SearchView searchView = (SearchView) (menu.findItem(R.id.search)).getActionView();
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+            searchView.setQueryHint(getResources().getString(R.string.search_hint_movie));
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    showLoading(true);
+                    tvShowViewModel.getSearchTvShows().observe(getActivity(), getSeachTvShow);
+                    tvShowViewModel.setSearchTvShow(getResources().getString(R.string.language), query);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
+                }
+            });
+        }
+
+        MenuItem menuItem = menu.findItem(R.id.search);
+        menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                showLoading(true);
+                tvShowViewModel.setTvShow(getResources().getString(R.string.language));
+                return true;
+            }
+        });
+
     }
 
 }

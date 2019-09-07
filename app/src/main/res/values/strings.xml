@@ -20,4 +20,7 @@
     <string name="no">No</string>
     <string name="appwidget_text">Favorites Widget</string>
     <string name="empty_text">No data</string>
+    <string name="search">Search</string>
+    <string name="search_hint_movie">Search Movie</string>
+    <string name="search_hint_tv_show">Search TV Show</string>
 </resources>

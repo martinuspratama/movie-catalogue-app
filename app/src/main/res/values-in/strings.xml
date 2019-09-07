@@ -21,4 +21,7 @@
     <string name="no">Tidak</string>
     <string name="appwidget_text">Widget Favorit</string>
     <string name="empty_text">Tidak ada data</string>
+    <string name="search">Pencarian</string>
+    <string name="search_hint_movie">Cari Film Bioskop</string>
+    <string name="search_hint_tv_show">Cari Acara TV</string>
 </resources>

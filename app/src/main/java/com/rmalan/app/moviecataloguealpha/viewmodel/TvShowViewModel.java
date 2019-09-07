@@ -55,7 +55,43 @@ public class TvShowViewModel extends ViewModel {
         });
     }
 
+    public void setSearchTvShow(final String language, final String query) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        final ArrayList<TvShowItems> listItems = new ArrayList<>();
+
+        String url = BASE_URL + "search/tv?api_key=" + API_KEY + "&language=" + language + "&query=" + query;
+
+        client.get(url, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String result = new String(responseBody);
+                    JSONObject responseObject = new JSONObject(result);
+                    JSONArray list = responseObject.getJSONArray("results");
+
+                    for (int i = 0; i < list.length(); i++) {
+                        JSONObject tvShow = list.getJSONObject(i);
+                        TvShowItems tvShowItems = new TvShowItems(tvShow);
+                        listItems.add(tvShowItems);
+                    }
+                    listTvShows.postValue(listItems);
+                } catch (Exception e) {
+                    Log.d("Exception", e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.d("onFailure", error.getMessage());
+            }
+        });
+    }
+
     public LiveData<ArrayList<TvShowItems>> getTvShows() {
+        return listTvShows;
+    }
+
+    public LiveData<ArrayList<TvShowItems>> getSearchTvShows() {
         return listTvShows;
     }
 }
