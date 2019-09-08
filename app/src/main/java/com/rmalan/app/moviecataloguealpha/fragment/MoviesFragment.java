@@ -25,6 +25,7 @@ import com.rmalan.app.moviecataloguealpha.R;
 import com.rmalan.app.moviecataloguealpha.adapter.MoviesAdapter;
 import com.rmalan.app.moviecataloguealpha.detail.MovieDetailActivity;
 import com.rmalan.app.moviecataloguealpha.model.MovieItems;
+import com.rmalan.app.moviecataloguealpha.settings.SettingsActivity;
 import com.rmalan.app.moviecataloguealpha.viewmodel.MovieViewModel;
 
 import java.util.ArrayList;
@@ -143,6 +144,16 @@ public class MoviesFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(getActivity(), SettingsActivity.class);
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

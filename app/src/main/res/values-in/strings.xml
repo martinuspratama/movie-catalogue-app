@@ -24,4 +24,14 @@
     <string name="search">Pencarian</string>
     <string name="search_hint_movie">Cari Film Bioskop</string>
     <string name="search_hint_tv_show">Cari Acara TV</string>
+    <string name="change_language">Ubah Bahasa</string>
+    <string name="daily_reminder">Pengingat Harian</string>
+    <string name="release_today">Pengingat Rilis Hari Ini</string>
+    <string name="settings">Pengaturan</string>
+    <string name="cancel_daily_reminder">Pengingat harian dinonaktifkan</string>
+    <string name="set_daily_reminder">Pengingat harian diaktifkan</string>
+    <string name="set_release_today_reminder">Pengingat rilis hari ini diaktifkan</string>
+    <string name="cancel_release_today_reminder">Pengingat rilis hari ini dinonaktifkan</string>
+    <string name="message_release_today_reminder">Hai, ada film bioskop baru hari ini</string>
+    <string name="message_daily_reminder">Hai, jangan lupa menonton film bioskop hari ini</string>
 </resources>

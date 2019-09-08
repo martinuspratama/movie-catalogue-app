@@ -25,6 +25,7 @@ import com.rmalan.app.moviecataloguealpha.R;
 import com.rmalan.app.moviecataloguealpha.adapter.TvShowsAdapter;
 import com.rmalan.app.moviecataloguealpha.detail.TvShowDetailActivity;
 import com.rmalan.app.moviecataloguealpha.model.TvShowItems;
+import com.rmalan.app.moviecataloguealpha.settings.SettingsActivity;
 import com.rmalan.app.moviecataloguealpha.viewmodel.TvShowViewModel;
 
 import java.util.ArrayList;
@@ -143,6 +144,16 @@ public class TvShowsFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(getActivity(), SettingsActivity.class);
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
