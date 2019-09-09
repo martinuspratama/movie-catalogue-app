@@ -87,9 +87,8 @@ public class ReleaseTodayReminder extends BroadcastReceiver {
         Intent intent = new Intent(context, ReleaseTodayReminder.class);
 
         Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 8);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, NOTIFICATION_ID, intent, 0);
         if (alarmManager != null) {
