@@ -1,5 +1,6 @@
 package com.rmalan.app.moviecataloguealpha.detail;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,8 +13,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.rmalan.app.moviecataloguealpha.R;
 import com.rmalan.app.moviecataloguealpha.db.FavoritesHelper;
-import com.rmalan.app.moviecataloguealpha.model.FavoriteItems;
 import com.rmalan.app.moviecataloguealpha.model.TvShowItems;
+
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.CONTENT_URI_TV_SHOWS;
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.ID;
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.OVERVIEW;
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.POSTER;
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.RELEASE_DATE;
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.TITLE;
 
 public class TvShowDetailActivity extends AppCompatActivity {
 
@@ -23,7 +30,6 @@ public class TvShowDetailActivity extends AppCompatActivity {
     ImageView imgPoster;
 
     private TvShowItems tvShowItems;
-    private FavoriteItems favoriteItems;
 
     private FavoritesHelper favoritesHelper;
 
@@ -63,22 +69,17 @@ public class TvShowDetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_favorite) {
-            favoriteItems = new FavoriteItems();
+            ContentValues values = new ContentValues();
+            values.put(ID, tvShowItems.getId());
+            values.put(POSTER, tvShowItems.getPoster());
+            values.put(TITLE, tvShowItems.getTitle());
+            values.put(RELEASE_DATE, tvShowItems.getReleaseDate());
+            values.put(OVERVIEW, tvShowItems.getOverview());
 
-            favoriteItems.setId(tvShowItems.getId());
-            favoriteItems.setPoster(tvShowItems.getPoster());
-            favoriteItems.setTitle(tvShowItems.getTitle());
-            favoriteItems.setReleaseDate(tvShowItems.getReleaseDate());
-            favoriteItems.setOverview(tvShowItems.getOverview());
-
-            long result = favoritesHelper.insertTvShow(favoriteItems);
-
-            if (result > 0) {
-                Toast.makeText(this, R.string.add_favorite, Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, R.string.already_favorite, Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(this, R.string.add_favorite, Toast.LENGTH_SHORT).show();
+            getContentResolver().insert(CONTENT_URI_TV_SHOWS, values);
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

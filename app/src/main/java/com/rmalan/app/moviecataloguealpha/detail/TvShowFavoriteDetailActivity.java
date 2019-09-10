@@ -2,6 +2,8 @@ package com.rmalan.app.moviecataloguealpha.detail;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.rmalan.app.moviecataloguealpha.R;
-import com.rmalan.app.moviecataloguealpha.db.FavoritesHelper;
 import com.rmalan.app.moviecataloguealpha.model.FavoriteItems;
 
 public class TvShowFavoriteDetailActivity extends AppCompatActivity {
@@ -33,8 +34,6 @@ public class TvShowFavoriteDetailActivity extends AppCompatActivity {
     private FavoriteItems favoriteItems;
     private int position;
 
-    private FavoritesHelper favoritesHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +44,18 @@ public class TvShowFavoriteDetailActivity extends AppCompatActivity {
         tvRelease = findViewById(R.id.txt_release);
         tvOverview = findViewById(R.id.txt_overview);
 
-        favoritesHelper = FavoritesHelper.getInstance(getApplicationContext());
-        favoritesHelper.open();
-
         favoriteItems = getIntent().getParcelableExtra(EXTRA_FAVORITE);
         position = getIntent().getIntExtra(EXTRA_POSITION, 0);
+
+        Uri uri = getIntent().getData();
+
+        if (uri != null) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) favoriteItems = new FavoriteItems(cursor);
+                cursor.close();
+            }
+        }
 
         Glide.with(this).load("https://image.tmdb.org/t/p/w500/" + favoriteItems.getPoster()).into(imgPoster);
         tvTitle.setText(favoriteItems.getTitle());
@@ -91,16 +97,12 @@ public class TvShowFavoriteDetailActivity extends AppCompatActivity {
                 .setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        long result = favoritesHelper.deleteTvShow(favoriteItems.getId());
-                        if (result > 0) {
-                            Intent intent = new Intent();
-                            intent.putExtra(EXTRA_POSITION, position);
-                            setResult(RESULT_DELETE, intent);
-                            Toast.makeText(TvShowFavoriteDetailActivity.this, R.string.delete_item, Toast.LENGTH_SHORT).show();
-                            finish();
-                        } else {
-                            Toast.makeText(TvShowFavoriteDetailActivity.this, R.string.delete_failed, Toast.LENGTH_SHORT).show();
-                        }
+                        Intent intent = new Intent();
+                        intent.putExtra(EXTRA_POSITION, position);
+                        setResult(RESULT_DELETE, intent);
+                        Toast.makeText(TvShowFavoriteDetailActivity.this, R.string.delete_item, Toast.LENGTH_SHORT).show();
+                        getContentResolver().delete(getIntent().getData(), null, null);
+                        finish();
                     }
                 })
                 .setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {

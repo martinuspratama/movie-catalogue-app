@@ -56,6 +56,13 @@
             </intent-filter>
         </activity>
 
+        <provider
+            android:name=".provider.FavoritesProvider"
+            android:authorities="com.rmalan.app.moviecataloguealpha"
+            android:exported="true"
+            android:readPermission="com.rmalan.app.moviecataloguealpha.READ_DATABASE"
+            android:writePermission="com.rmalan.app.moviecataloguealpha.WRITE_DATABASE" />
+
         <receiver android:name=".widget.FavoritesWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -65,12 +72,12 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/favorites_widget_info" />
         </receiver>
-
         <receiver
             android:name=".reminder.DailyReminder"
             android:enabled="true"
             android:exported="true"
             tools:ignore="ExportedReceiver" />
+
         <receiver
             android:name=".reminder.ReleaseTodayReminder"
             android:enabled="true"
@@ -81,18 +88,16 @@
             android:name=".widget.FavoritesWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <provider
-            android:authorities="com.rmalan.app.moviecataloguealpha"
-            android:name=".provider.FavoritesProvider"
-            android:exported="true"
-            android:readPermission="com.dicoding.mynotesapp.READ_DATABASE"
-            android:writePermission="com.dicoding.mynotesapp.WRITE_DATABASE" />
-
     </application>
+
+    <permission
+        android:name="com.rmalan.app.moviecataloguealpha.READ_DATABASE"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="com.rmalan.app.moviecataloguealpha.WRITE_DATABASE"
+        android:protectionLevel="normal" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <permission android:name="com.dicoding.mynotesapp.READ_DATABASE" android:protectionLevel="normal"/>
-    <permission android:name="com.dicoding.mynotesapp.WRITE_DATABASE" android:protectionLevel="normal"/>
 
 </manifest>

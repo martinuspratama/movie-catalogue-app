@@ -2,6 +2,7 @@ package com.rmalan.app.moviecataloguealpha.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.rmalan.app.moviecataloguealpha.detail.TvShowFavoriteDetailActivity;
 import com.rmalan.app.moviecataloguealpha.model.FavoriteItems;
 
 import java.util.ArrayList;
+
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.CONTENT_URI_TV_SHOWS;
 
 public class TvShowFavoritesAdapter extends RecyclerView.Adapter<TvShowFavoritesAdapter.TvShowFavoritesViewHolder> {
 
@@ -60,6 +63,9 @@ public class TvShowFavoritesAdapter extends RecyclerView.Adapter<TvShowFavorites
             @Override
             public void onItemClicked(View view, int position) {
                 Intent intent = new Intent(activity, TvShowFavoriteDetailActivity.class);
+
+                Uri uri = Uri.parse(CONTENT_URI_TV_SHOWS + "/" + listTvShowFavorites.get(position).getId());
+                intent.setData(uri);
                 intent.putExtra(TvShowFavoriteDetailActivity.EXTRA_POSITION, position);
                 intent.putExtra(TvShowFavoriteDetailActivity.EXTRA_FAVORITE, listTvShowFavorites.get(position));
                 activity.startActivityForResult(intent, TvShowFavoriteDetailActivity.REQUEST_DELETE);

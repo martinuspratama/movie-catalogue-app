@@ -171,4 +171,33 @@ public class FavoritesHelper {
         return database.delete(DATABASE_TABLE_MOVIES, ID + " = ?", new String[]{id});
     }
 
+    // TV Show Provider
+    public Cursor queryTvShowByIdProvider(String id) {
+        return database.query(DATABASE_TABLE_TV_SHOWS, null
+                , ID + " = ?"
+                , new String[]{id}
+                , null
+                , null
+                , null
+                , null);
+    }
+
+    public Cursor queryTvShowsProvider() {
+        return database.query(DATABASE_TABLE_TV_SHOWS
+                , null
+                , null
+                , null
+                , null
+                , null
+                , ID + " ASC");
+    }
+
+    public long insertTvShowProvider(ContentValues values) {
+        return database.insert(DATABASE_TABLE_TV_SHOWS, null, values);
+    }
+
+    public int deleteTvShowProvider(String id) {
+        return database.delete(DATABASE_TABLE_TV_SHOWS, ID + " = ?", new String[]{id});
+    }
+
 }

@@ -19,14 +19,17 @@ public class DatabaseContract {
 
     public static final class FavoritesColumns implements BaseColumns {
 
-        // Table Name
         public static String TABLE_MOVIES = "movies";
         public static final Uri CONTENT_URI_MOVIES = new Uri.Builder().scheme(SCHEME)
                 .authority(AUTHORITY)
                 .appendPath(TABLE_MOVIES)
                 .build();
         public static String TABLE_TV_SHOWS = "tv_shows";
-        //Table Column
+        public static final Uri CONTENT_URI_TV_SHOWS = new Uri.Builder().scheme(SCHEME)
+                .authority(AUTHORITY)
+                .appendPath(TABLE_TV_SHOWS)
+                .build();
+
         public static String ID = "id";
         public static String POSTER = "poster";
         public static String TITLE = "title";

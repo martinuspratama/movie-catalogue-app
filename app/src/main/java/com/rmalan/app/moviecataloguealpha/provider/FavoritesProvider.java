@@ -13,18 +13,24 @@ import com.rmalan.app.moviecataloguealpha.db.FavoritesHelper;
 
 import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.AUTHORITY;
 import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.CONTENT_URI_MOVIES;
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.CONTENT_URI_TV_SHOWS;
 import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.TABLE_MOVIES;
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.TABLE_TV_SHOWS;
 
 public class FavoritesProvider extends ContentProvider {
 
     private static final int MOVIES = 1;
     private static final int MOVIE_ID = 2;
+    private static final int TV_SHOWS = 11;
+    private static final int TV_SHOW_ID = 12;
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
         sUriMatcher.addURI(AUTHORITY, TABLE_MOVIES, MOVIES);
+        sUriMatcher.addURI(AUTHORITY, TABLE_TV_SHOWS, TV_SHOWS);
         sUriMatcher.addURI(AUTHORITY, TABLE_MOVIES + "/#", MOVIE_ID);
+        sUriMatcher.addURI(AUTHORITY, TABLE_TV_SHOWS + "/#", TV_SHOW_ID);
     }
 
     private FavoritesHelper favoritesHelper;
@@ -46,6 +52,12 @@ public class FavoritesProvider extends ContentProvider {
                 break;
             case MOVIE_ID:
                 cursor = favoritesHelper.queryMovieByIdProvider(uri.getLastPathSegment());
+                break;
+            case TV_SHOWS:
+                cursor = favoritesHelper.queryTvShowsProvider();
+                break;
+            case TV_SHOW_ID:
+                cursor = favoritesHelper.queryTvShowByIdProvider(uri.getLastPathSegment());
                 break;
             default:
                 cursor = null;
@@ -69,14 +81,17 @@ public class FavoritesProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
             case MOVIES:
                 added = favoritesHelper.insertMovieProvider(contentValues);
-                break;
+                getContext().getContentResolver().notifyChange(CONTENT_URI_MOVIES, null);
+                return Uri.parse(CONTENT_URI_MOVIES + "/" + added);
+            case TV_SHOWS:
+                added = favoritesHelper.insertTvShowProvider(contentValues);
+                getContext().getContentResolver().notifyChange(CONTENT_URI_TV_SHOWS, null);
+                return Uri.parse(CONTENT_URI_TV_SHOWS + "/" + added);
             default:
                 added = 0;
                 break;
         }
-
-        getContext().getContentResolver().notifyChange(CONTENT_URI_MOVIES, null);
-        return Uri.parse(CONTENT_URI_MOVIES + "/" + added);
+        return null;
     }
 
     @Override
@@ -86,14 +101,17 @@ public class FavoritesProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
             case MOVIE_ID:
                 deleted = favoritesHelper.deleteMovieProvider(uri.getLastPathSegment());
-                break;
+                getContext().getContentResolver().notifyChange(CONTENT_URI_MOVIES, null);
+                return deleted;
+            case TV_SHOW_ID:
+                deleted = favoritesHelper.deleteTvShowProvider(uri.getLastPathSegment());
+                getContext().getContentResolver().notifyChange(CONTENT_URI_TV_SHOWS, null);
+                return deleted;
             default:
                 deleted = 0;
                 break;
         }
-
-        getContext().getContentResolver().notifyChange(CONTENT_URI_MOVIES, null);
-        return deleted;
+        return 0;
     }
 
     @Override
