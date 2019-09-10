@@ -82,66 +82,6 @@ public class FavoritesHelper {
         return arrayList;
     }
 
-    public long insertMovie(FavoriteItems favoriteItems) {
-        ContentValues args = new ContentValues();
-        args.put(ID, favoriteItems.getId());
-        args.put(POSTER, favoriteItems.getPoster());
-        args.put(TITLE, favoriteItems.getTitle());
-        args.put(RELEASE_DATE, favoriteItems.getReleaseDate());
-        args.put(OVERVIEW, favoriteItems.getOverview());
-
-        return database.insert(DATABASE_TABLE_MOVIES, null, args);
-    }
-
-    public int deleteMovie(int id) {
-        return database.delete(TABLE_MOVIES, ID + " = '" + id + "'", null);
-    }
-
-
-    public ArrayList<FavoriteItems> getAllTvShows() {
-        ArrayList<FavoriteItems> arrayList = new ArrayList<>();
-        Cursor cursor = database.query(DATABASE_TABLE_TV_SHOWS, null,
-                null,
-                null,
-                null,
-                null,
-                ID + " ASC",
-                null);
-        cursor.moveToFirst();
-        FavoriteItems favoriteItems;
-        if (cursor.getCount() > 0) {
-            do {
-                favoriteItems = new FavoriteItems();
-                favoriteItems.setId(cursor.getInt(cursor.getColumnIndexOrThrow(ID)));
-                favoriteItems.setPoster(cursor.getString(cursor.getColumnIndexOrThrow(POSTER)));
-                favoriteItems.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(TITLE)));
-                favoriteItems.setReleaseDate(cursor.getString(cursor.getColumnIndexOrThrow(RELEASE_DATE)));
-                favoriteItems.setOverview(cursor.getString(cursor.getColumnIndexOrThrow(OVERVIEW)));
-
-                arrayList.add(favoriteItems);
-                cursor.moveToNext();
-            } while (!cursor.isAfterLast());
-        }
-
-        cursor.close();
-        return arrayList;
-    }
-
-    public long insertTvShow(FavoriteItems favoriteItems) {
-        ContentValues args = new ContentValues();
-        args.put(ID, favoriteItems.getId());
-        args.put(POSTER, favoriteItems.getPoster());
-        args.put(TITLE, favoriteItems.getTitle());
-        args.put(RELEASE_DATE, favoriteItems.getReleaseDate());
-        args.put(OVERVIEW, favoriteItems.getOverview());
-
-        return database.insert(DATABASE_TABLE_TV_SHOWS, null, args);
-    }
-
-    public int deleteTvShow(int id) {
-        return database.delete(TABLE_TV_SHOWS, ID + " = '" + id + "'", null);
-    }
-
     // Movie Provider
     public Cursor queryMovieByIdProvider(String id) {
         return database.query(DATABASE_TABLE_MOVIES, null

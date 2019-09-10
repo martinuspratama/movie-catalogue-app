@@ -128,4 +128,5 @@ public class TvShowFavoritesFragment extends Fragment implements LoadFavoritesCa
             weakCallback.get().postExecute(favoriteItems);
         }
     }
+
 }
