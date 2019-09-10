@@ -2,6 +2,7 @@ package com.rmalan.app.moviecataloguealpha.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import com.rmalan.app.moviecataloguealpha.model.FavoriteItems;
 
 import java.util.ArrayList;
 
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.CONTENT_URI_MOVIES;
+
 public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAdapter.MovieFavoritesViewHolder> {
 
     private ArrayList<FavoriteItems> listMovieFavorites = new ArrayList<>();
@@ -32,18 +35,9 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
     }
 
     public void setListMovieFavorites(ArrayList<FavoriteItems> listMovieFavorites) {
-        if (listMovieFavorites.size() > 0) {
-            this.listMovieFavorites.clear();
-        }
+        this.listMovieFavorites.clear();
         this.listMovieFavorites.addAll(listMovieFavorites);
-
         notifyDataSetChanged();
-    }
-
-    public void removeItem(int position) {
-        this.listMovieFavorites.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, listMovieFavorites.size());
     }
 
     @NonNull
@@ -60,6 +54,9 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
             @Override
             public void onItemClicked(View view, int position) {
                 Intent intent = new Intent(activity, MovieFavoriteDetailActivity.class);
+
+                Uri uri = Uri.parse(CONTENT_URI_MOVIES + "/" + listMovieFavorites.get(position).getId());
+                intent.setData(uri);
                 intent.putExtra(MovieFavoriteDetailActivity.EXTRA_POSITION, position);
                 intent.putExtra(MovieFavoriteDetailActivity.EXTRA_FAVORITE, listMovieFavorites.get(position));
                 activity.startActivityForResult(intent, MovieFavoriteDetailActivity.REQUEST_DELETE);
@@ -81,4 +78,5 @@ public class MovieFavoritesAdapter extends RecyclerView.Adapter<MovieFavoritesAd
             imgPoster = itemView.findViewById(R.id.img_poster);
         }
     }
+
 }

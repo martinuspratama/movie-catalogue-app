@@ -1,9 +1,12 @@
 package com.rmalan.app.moviecataloguealpha.fragment;
 
 
-import android.content.Intent;
+import android.content.Context;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,20 +21,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmalan.app.moviecataloguealpha.LoadFavoritesCallback;
 import com.rmalan.app.moviecataloguealpha.R;
 import com.rmalan.app.moviecataloguealpha.adapter.MovieFavoritesAdapter;
-import com.rmalan.app.moviecataloguealpha.db.FavoritesHelper;
-import com.rmalan.app.moviecataloguealpha.detail.MovieFavoriteDetailActivity;
 import com.rmalan.app.moviecataloguealpha.model.FavoriteItems;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.CONTENT_URI_MOVIES;
+import static com.rmalan.app.moviecataloguealpha.helper.MappingHelper.mapCursorToArrayList;
+
 
 public class MovieFavoritesFragment extends Fragment implements LoadFavoritesCallback {
 
     private static final String EXTRA_STATE = "extra_state";
+    private static HandlerThread handlerThread;
     private RecyclerView rvMovieFavorites;
     private MovieFavoritesAdapter movieFavoritesAdapter;
-    private FavoritesHelper favoritesHelper;
 
     public MovieFavoritesFragment() {
 
@@ -50,14 +54,15 @@ public class MovieFavoritesFragment extends Fragment implements LoadFavoritesCal
         rvMovieFavorites.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         rvMovieFavorites.setHasFixedSize(true);
 
-        favoritesHelper = FavoritesHelper.getInstance(getActivity());
-        favoritesHelper.open();
+        handlerThread = new HandlerThread("DataObserver");
+        handlerThread.start();
+        Handler handler = new Handler(handlerThread.getLooper());
 
         movieFavoritesAdapter = new MovieFavoritesAdapter(getActivity());
         rvMovieFavorites.setAdapter(movieFavoritesAdapter);
 
         if (savedInstanceState == null) {
-            new LoadMovieFavoritesAsync(favoritesHelper, this).execute();
+            new LoadMovieFavoritesAsync(getActivity(), this).execute();
         } else {
             ArrayList<FavoriteItems> list = savedInstanceState.getParcelableArrayList(EXTRA_STATE);
             if (list != null) {
@@ -83,38 +88,24 @@ public class MovieFavoritesFragment extends Fragment implements LoadFavoritesCal
     }
 
     @Override
-    public void postExecute(ArrayList<FavoriteItems> favoriteItems) {
-        movieFavoritesAdapter.setListMovieFavorites(favoriteItems);
-    }
+    public void postExecute(Cursor favoriteItems) {
+        ArrayList<FavoriteItems> listMovieFavorites = mapCursorToArrayList(favoriteItems);
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (data != null) {
-            if (requestCode == MovieFavoriteDetailActivity.REQUEST_DELETE) {
-                if (resultCode == MovieFavoriteDetailActivity.RESULT_DELETE) {
-                    int position = data.getIntExtra(MovieFavoriteDetailActivity.EXTRA_POSITION, 0);
-                    movieFavoritesAdapter.removeItem(position);
-                    Toast.makeText(getActivity(), getString(R.string.delete_item), Toast.LENGTH_SHORT).show();
-                }
-            }
+        if (listMovieFavorites.size() > 0) {
+            movieFavoritesAdapter.setListMovieFavorites(listMovieFavorites);
+        } else {
+            movieFavoritesAdapter.setListMovieFavorites(new ArrayList<FavoriteItems>());
+            Toast.makeText(getActivity(), getResources().getString(R.string.no_data), Toast.LENGTH_SHORT).show();
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        favoritesHelper.close();
-    }
+    private static class LoadMovieFavoritesAsync extends AsyncTask<Void, Void, Cursor> {
 
-    private static class LoadMovieFavoritesAsync extends AsyncTask<Void, Void, ArrayList<FavoriteItems>> {
-
-        private final WeakReference<FavoritesHelper> weakFavoritesHelper;
+        private final WeakReference<Context> weakContext;
         private final WeakReference<LoadFavoritesCallback> weakCallback;
 
-        private LoadMovieFavoritesAsync(FavoritesHelper favoritesHelper, LoadFavoritesCallback callback) {
-            weakFavoritesHelper = new WeakReference<>(favoritesHelper);
+        private LoadMovieFavoritesAsync(Context context, LoadFavoritesCallback callback) {
+            weakContext = new WeakReference<>(context);
             weakCallback = new WeakReference<>(callback);
         }
 
@@ -126,12 +117,13 @@ public class MovieFavoritesFragment extends Fragment implements LoadFavoritesCal
 
 
         @Override
-        protected ArrayList<FavoriteItems> doInBackground(Void... voids) {
-            return weakFavoritesHelper.get().getAllMovies();
+        protected Cursor doInBackground(Void... voids) {
+            Context context = weakContext.get();
+            return context.getContentResolver().query(CONTENT_URI_MOVIES, null, null, null, null);
         }
 
         @Override
-        protected void onPostExecute(ArrayList<FavoriteItems> favoriteItems) {
+        protected void onPostExecute(Cursor favoriteItems) {
             super.onPostExecute(favoriteItems);
             weakCallback.get().postExecute(favoriteItems);
         }

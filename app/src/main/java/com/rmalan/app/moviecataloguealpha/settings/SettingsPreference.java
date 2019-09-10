@@ -13,7 +13,7 @@ public class SettingsPreference {
     private final SharedPreferences preferences;
 
     SettingsPreference(Context context) {
-        preferences = context.getSharedPreferences(PREFS_NAME, context.MODE_PRIVATE);
+        preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
     public boolean getDailyReminder() {

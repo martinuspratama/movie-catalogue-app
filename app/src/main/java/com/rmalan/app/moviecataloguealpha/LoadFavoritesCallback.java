@@ -1,11 +1,9 @@
 package com.rmalan.app.moviecataloguealpha;
 
-import com.rmalan.app.moviecataloguealpha.model.FavoriteItems;
-
-import java.util.ArrayList;
+import android.database.Cursor;
 
 public interface LoadFavoritesCallback {
     void preExecute();
 
-    void postExecute(ArrayList<FavoriteItems> favoriteItems);
+    void postExecute(Cursor favoriteItems);
 }

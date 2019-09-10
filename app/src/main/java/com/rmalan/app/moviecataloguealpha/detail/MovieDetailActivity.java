@@ -1,5 +1,6 @@
 package com.rmalan.app.moviecataloguealpha.detail;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,8 +13,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.rmalan.app.moviecataloguealpha.R;
 import com.rmalan.app.moviecataloguealpha.db.FavoritesHelper;
-import com.rmalan.app.moviecataloguealpha.model.FavoriteItems;
 import com.rmalan.app.moviecataloguealpha.model.MovieItems;
+
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.CONTENT_URI_MOVIES;
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.ID;
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.OVERVIEW;
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.POSTER;
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.RELEASE_DATE;
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.TITLE;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -23,7 +30,6 @@ public class MovieDetailActivity extends AppCompatActivity {
     ImageView imgPoster;
 
     private MovieItems movieItems;
-    private FavoriteItems favoriteItems;
 
     private FavoritesHelper favoritesHelper;
 
@@ -63,21 +69,15 @@ public class MovieDetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_favorite) {
-            favoriteItems = new FavoriteItems();
+            ContentValues values = new ContentValues();
+            values.put(ID, movieItems.getId());
+            values.put(POSTER, movieItems.getPoster());
+            values.put(TITLE, movieItems.getTitle());
+            values.put(RELEASE_DATE, movieItems.getReleaseDate());
+            values.put(OVERVIEW, movieItems.getOverview());
 
-            favoriteItems.setId(movieItems.getId());
-            favoriteItems.setPoster(movieItems.getPoster());
-            favoriteItems.setTitle(movieItems.getTitle());
-            favoriteItems.setReleaseDate(movieItems.getReleaseDate());
-            favoriteItems.setOverview(movieItems.getOverview());
-
-            long result = favoritesHelper.insertMovie(favoriteItems);
-
-            if (result > 0) {
-                Toast.makeText(this, R.string.add_favorite, Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, R.string.already_favorite, Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(this, R.string.add_favorite, Toast.LENGTH_SHORT).show();
+            getContentResolver().insert(CONTENT_URI_MOVIES, values);
         }
         return super.onOptionsItemSelected(item);
     }

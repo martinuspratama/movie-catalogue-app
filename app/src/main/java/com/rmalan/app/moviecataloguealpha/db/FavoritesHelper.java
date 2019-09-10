@@ -15,9 +15,9 @@ import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesCo
 import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.OVERVIEW;
 import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.POSTER;
 import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.RELEASE_DATE;
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.TABLE_MOVIES;
+import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.TABLE_TV_SHOWS;
 import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.FavoritesColumns.TITLE;
-import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.TABLE_MOVIES;
-import static com.rmalan.app.moviecataloguealpha.db.DatabaseContract.TABLE_TV_SHOWS;
 
 public class FavoritesHelper {
 
@@ -140,6 +140,35 @@ public class FavoritesHelper {
 
     public int deleteTvShow(int id) {
         return database.delete(TABLE_TV_SHOWS, ID + " = '" + id + "'", null);
+    }
+
+    // Movie Provider
+    public Cursor queryMovieByIdProvider(String id) {
+        return database.query(DATABASE_TABLE_MOVIES, null
+                , ID + " = ?"
+                , new String[]{id}
+                , null
+                , null
+                , null
+                , null);
+    }
+
+    public Cursor queryMoviesProvider() {
+        return database.query(DATABASE_TABLE_MOVIES
+                , null
+                , null
+                , null
+                , null
+                , null
+                , ID + " ASC");
+    }
+
+    public long insertMovieProvider(ContentValues values) {
+        return database.insert(DATABASE_TABLE_MOVIES, null, values);
+    }
+
+    public int deleteMovieProvider(String id) {
+        return database.delete(DATABASE_TABLE_MOVIES, ID + " = ?", new String[]{id});
     }
 
 }

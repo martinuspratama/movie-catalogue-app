@@ -33,4 +33,5 @@
     <string name="cancel_release_today_reminder">Release today reminder reminder are disabled</string>
     <string name="message_daily_reminder">Hi, don\'t forget to watch a movie today</string>
     <string name="message_release_today_reminder">Hi, there is a new movie today</string>
+    <string name="no_data">No data!</string>
 </resources>
